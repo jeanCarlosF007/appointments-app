@@ -4,12 +4,12 @@ import { rolesGuard } from '../../core/guards/roles.guard';
 import { UserRoles } from '../auth/constants/user-roles.enum';
 import { CreateComponent } from './components/create/create.component';
 import { ListComponent } from './components/list/list.component';
-import { ProductsComponent } from './products.component';
+import { AppointmentsComponent } from './appointments.component';
 
-export const productsRoutes: Routes = [
+export const appointmentsRoutes: Routes = [
   {
     path: '',
-    component: ProductsComponent,
+    component: AppointmentsComponent,
     canActivate: [authGuard],
     children: [
       {

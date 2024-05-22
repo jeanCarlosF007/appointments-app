@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';
 import { Subject, first } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../commons/components/confirmation-modal/confirmation-modal.component';
-import { Product } from '../../models/product.model';
-import { ProductsService } from '../../services/products.service';
+import { Appointment } from '../../models/appointment.model';
+import { AppointmentsService } from '../../services/appointments.service';
 
 @Component({
   selector: 'app-list',
@@ -18,37 +18,25 @@ import { ProductsService } from '../../services/products.service';
 export class ListComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe = new Subject();
 
-  products?: Product[];
-
-  // observable = new Observable((observer) => {
-  //   let counter = 0;
-  //   setInterval(() => {
-  //     observer.next(++counter);
-  //   }, 1000);
-  // });
+  appointments?: Appointment[];
 
   constructor(
-    private productsService: ProductsService,
+    private appointmentsService: AppointmentsService,
     public dialog: MatDialog,
     private router: Router
-  ) {}
+  ) { }
 
-  // Executado uma só vez, quando o componente é iniciado e após receber todos os dados provenientes de @Input()
   ngOnInit(): void {
-    this.getProducts();
-
-    // this.observable
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe((response) => console.log(response));
+    this.getAppointments();
   }
 
-  getProducts(): void {
-    this.productsService
-      .getProducts()
+  getAppointments(): void {
+    this.appointmentsService
+      .getAppointments()
       .pipe(first())
       .subscribe({
-        next: (response: Product[]) => {
-          this.products = response;
+        next: (response: Appointment[]) => {
+          this.appointments = response;
         },
         error: (err) => {
           console.log(err);
@@ -57,12 +45,12 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: string): void {
-    this.productsService
-      .deleteProduct(id)
+    this.appointmentsService
+      .deleteAppointment(id)
       .pipe(first())
       .subscribe({
         complete: () => {
-          this.getProducts();
+          this.getAppointments();
         },
         error: (err) => {
           console.log(err);
@@ -89,11 +77,10 @@ export class ListComponent implements OnInit, OnDestroy {
       });
   }
 
-  editProduct(id: string): void {
-    this.router.navigate(['products', 'edit', id]);
+  editAppointment(id: string): void {
+    this.router.navigate(['appointments', 'edit', id]);
   }
 
-  // Executado quando o componente for destruído, ou seja, quando ele for removido da tela
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(true);
     this.ngUnsubscribe.complete();

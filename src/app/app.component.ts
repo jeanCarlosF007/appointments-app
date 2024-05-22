@@ -4,14 +4,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './commons/components/header/header.component';
 import { LoadingService } from './commons/services/loading.service';
-import { ProductsComponent } from './modules/products/products.component';
+import { AppointmentsComponent } from './modules/appointments/appointments.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    ProductsComponent,
+    AppointmentsComponent,
     HeaderComponent,
     MatProgressSpinnerModule,
     NgIf,
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
   isLoading = false;
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.loadingService.isLoading$.subscribe((res) => {

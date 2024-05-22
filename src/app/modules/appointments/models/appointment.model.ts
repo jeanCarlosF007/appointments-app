@@ -1,8 +1,8 @@
-export interface Product {
+export interface Appointment {
   id?: string;
   name: string;
+  age: number;
   description: string;
-  price: number;
   qty: number;
   image: string;
 }

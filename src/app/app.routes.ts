@@ -5,7 +5,7 @@ import { authGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'products',
+    redirectTo: 'appointments',
     pathMatch: 'full',
   },
   {
@@ -14,11 +14,11 @@ export const routes: Routes = [
       import('./modules/auth/auth.routes').then((m) => m.authRoutes),
   },
   {
-    path: 'products',
+    path: 'appointments',
     canActivate: [authGuard],
     loadChildren: () =>
-      import('./modules/products/products.routes').then(
-        (m) => m.productsRoutes
+      import('./modules/appointments/appointments.routes').then(
+        (m) => m.appointmentsRoutes
       ),
   },
   {

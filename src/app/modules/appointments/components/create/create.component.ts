@@ -10,8 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { first } from 'rxjs';
-import { Product } from '../../models/product.model';
-import { ProductsService } from '../../services/products.service';
+import { Appointment } from '../../models/appointment.model';
+import { AppointmentsService } from '../../services/appointments.service';
 
 @Component({
   selector: 'app-create',
@@ -32,17 +32,17 @@ export class CreateComponent implements OnInit {
   id?: string;
 
   constructor(
-    private productsService: ProductsService,
+    private appointmentsService: AppointmentsService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
 
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
-      this.getProduct(this.id);
+      this.getAppointment(this.id);
     }
   }
 
@@ -56,13 +56,13 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  getProduct(id: string): void {
-    this.productsService
-      .getProductById(id)
+  getAppointment(id: string): void {
+    this.appointmentsService
+      .getAppointmentById(id)
       .pipe(first())
       .subscribe({
-        next: (product) => {
-          this.form.patchValue(product);
+        next: (appointment) => {
+          this.form.patchValue(appointment);
         },
         error: (err) => {
           console.log(err);
@@ -71,23 +71,23 @@ export class CreateComponent implements OnInit {
   }
 
   onSave(): void {
-    const product: Product = this.form.getRawValue();
+    const appointment: Appointment = this.form.getRawValue();
 
     if (this.id) {
-      this.updateProduct(product);
+      this.updateAppointment(appointment);
       return;
     }
 
-    this.createProduct(product);
+    this.createAppointment(appointment);
   }
 
-  createProduct(product: Product): void {
-    this.productsService
-      .saveProduct(product)
+  createAppointment(appointment: Appointment): void {
+    this.appointmentsService
+      .saveAppointment(appointment)
       .pipe(first())
       .subscribe({
         complete: () => {
-          this.router.navigate(['products']);
+          this.router.navigate(['appointments']);
         },
         error: (err) => {
           console.log(err);
@@ -95,13 +95,13 @@ export class CreateComponent implements OnInit {
       });
   }
 
-  updateProduct(product: Product): void {
-    this.productsService
-      .updateProduct(this.id as string, product)
+  updateAppointment(appointment: Appointment): void {
+    this.appointmentsService
+      .updateAppointment(this.id as string, appointment)
       .pipe(first())
       .subscribe({
         complete: () => {
-          this.router.navigate(['products']);
+          this.router.navigate(['appointments']);
         },
         error: (err) => {
           console.log(err);

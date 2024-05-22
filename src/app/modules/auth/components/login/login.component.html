@@ -6,7 +6,7 @@
         <mat-form-field appearance="outline">
           <mat-label>E-mail</mat-label>
           <input matInput formControlName="email" />
-          <mat-error>Um e-mail válido precisa ser informado</mat-error>
+          <mat-error>Você precisa informar um e-mail válido</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="row mb-3">
       <div class="col-md-4 offset-md-4 d-flex justify-content-between">
         <button mat-flat-button color="primary" [disabled]="form.invalid">
-          Salvar
+          Entrar
         </button>
         <button mat-button routerLink="/auth/register">Cadastrar-se</button>
       </div>

@@ -1,10 +1,9 @@
 export interface User {
+  companyId: string;
   name: string;
-  profession: string;
+  role: string;
   birthDate: string;
-  documentNumber: string;
   email: string;
   password: string;
   phone: string;
-  income: number;
 }
