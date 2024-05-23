@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
+  FormControlState,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -12,6 +13,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { first } from 'rxjs';
 import { Appointment } from '../../models/appointment.model';
 import { AppointmentsService } from '../../services/appointments.service';
+import { status } from '../../models/status.model';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-create',
@@ -22,6 +25,7 @@ import { AppointmentsService } from '../../services/appointments.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSelectModule
   ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
@@ -48,11 +52,12 @@ export class CreateComponent implements OnInit {
 
   buildForm(): void {
     this.form = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required]),
-      price: new FormControl(null, [Validators.required]),
-      qty: new FormControl(null, [Validators.required]),
-      image: new FormControl(null, [Validators.required]),
+      specialty: new FormControl(null, [Validators.required]),
+      doctor: new FormControl(null, [Validators.required]),
+      date: new FormControl(null, [Validators.required]),
+      time: new FormControl(null, [Validators.required]),
+      status: new FormControl(status.SCHEDULED, [Validators.required]),
+      obs: new FormControl(null, [Validators.required])
     });
   }
 
@@ -72,12 +77,10 @@ export class CreateComponent implements OnInit {
 
   onSave(): void {
     const appointment: Appointment = this.form.getRawValue();
-
     if (this.id) {
       this.updateAppointment(appointment);
       return;
     }
-
     this.createAppointment(appointment);
   }
 

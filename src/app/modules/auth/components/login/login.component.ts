@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (res) => {
           localStorage.setItem(Constants.TOKEN_KEY, `Bearer ${res.token}`);
-          localStorage.setItem(Constants.USER_ROLES, UserRoles.USER);
+          localStorage.setItem(Constants.USER_ROLES, res.user.role);
           this.router.navigate(['']);
         },
         error: (err) => {

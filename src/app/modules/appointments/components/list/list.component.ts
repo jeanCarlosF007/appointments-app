@@ -7,18 +7,19 @@ import { Subject, first } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../commons/components/confirmation-modal/confirmation-modal.component';
 import { Appointment } from '../../models/appointment.model';
 import { AppointmentsService } from '../../services/appointments.service';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [RouterModule, MatCardModule, MatButtonModule],
+  imports: [RouterModule, MatCardModule, MatButtonModule, MatTableModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })
 export class ListComponent implements OnInit, OnDestroy {
   protected ngUnsubscribe = new Subject();
 
-  appointments?: Appointment[];
+  appointments!: Appointment[];
 
   constructor(
     private appointmentsService: AppointmentsService,
@@ -35,8 +36,15 @@ export class ListComponent implements OnInit, OnDestroy {
       .getAppointments()
       .pipe(first())
       .subscribe({
+        // next: (response: Appointment[]) => {
+        //   this.appointments = response;
+        // },
         next: (response: Appointment[]) => {
-          this.appointments = response;
+          this.appointments = response.map(appointment => ({
+            ...appointment,
+            date: this.formatDate(appointment.date),
+            status: this.formatStatus(appointment.status)
+          }));
         },
         error: (err) => {
           console.log(err);
@@ -78,6 +86,10 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   editAppointment(id: string): void {
+    if (this.appointments[parseInt(id)].status === 'CANCELADO' || this.appointments[parseInt(id)].status === 'CONCLUÍDO') {
+      alert('Você não pode editar uma consulta que tenha sido cancelada ou já tenha sido concluída!');
+      return;
+    }
     this.router.navigate(['appointments', 'edit', id]);
   }
 
@@ -85,4 +97,27 @@ export class ListComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next(true);
     this.ngUnsubscribe.complete();
   }
+
+  formatDate(date: string): string {
+    const providedDate = new Date(date);
+    const dateOnly = providedDate.toLocaleDateString('pt-BR');
+    return dateOnly;
+  }
+
+  formatStatus(status: string): string {
+    switch (status) {
+      case 'SCHEDULED':
+        return 'AGENDADO';
+      case 'DONE':
+        return 'CONCLUÍDO';
+      case 'CANCELED':
+        return 'CANCELADO';
+      default:
+        return status;
+    }
+  }
+
+  displayedColumns: string[] = ['specialty', 'doctor', 'date', 'time', 'status', 'obs', 'edit'];
+  dataSource = this.appointments;
+
 }

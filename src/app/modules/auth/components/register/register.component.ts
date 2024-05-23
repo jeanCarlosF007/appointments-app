@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { UserRoles } from '../../constants/user-roles.enum';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSelectModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -36,13 +39,10 @@ export class RegisterComponent implements OnInit {
 
   buildForm(): void {
     this.form = new FormGroup({
-      companyId: new FormControl(null, [Validators.required, Validators.minLength(4)]),
       name: new FormControl(null, [Validators.required]),
-      role: new FormControl(null, [Validators.required]),
-      birthDate: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required])
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      role: new FormControl(null, [Validators.required]),
     });
   }
 
@@ -53,6 +53,7 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe({
         complete: () => {
+          console.log(user.role)
           this.router.navigate(['auth', 'login']);
         },
         error: (err) => {
