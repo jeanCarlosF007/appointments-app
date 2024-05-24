@@ -2,8 +2,6 @@
 
   <table mat-table [dataSource]="appointments" class="mat-elevation-z8">
 
-    <!-- @for (appointment of appointments; track appointment.doctor) { -->
-
     <ng-container matColumnDef="specialty">
       <th mat-header-cell *matHeaderCellDef> Especialidade </th>
       <td mat-cell *matCellDef="let appointment"> {{appointment.specialty}} </td>
@@ -38,15 +36,11 @@
       <th mat-header-cell *matHeaderCellDef> Editar </th>
       <td mat-cell *matCellDef="let appointment"> 
         <button mat-flat-button class="ms-2" color="primary" (click)="editAppointment(appointment.id!)">Editar</button> 
-        <button mat-flat-button class="ms-2" color="warn" (click)="editAppointment(appointment.id!)">Cancelar</button>
-        <button mat-flat-button class="ms-2" color="success" (click)="editAppointment(appointment.id!)">Concluir</button>
+        <button mat-flat-button class="ms-2" color="warn" (click)="cancelAppointment(appointment.id!)">Cancelar</button>
+        <button mat-flat-button class="ms-2" color="success" (click)="concludeAppointment(appointment.id!)">Concluir</button>
       </td>
 
     </ng-container>
-
-    <!-- } @empty {
-  <div class="col-12 text-center">Nenhuma consulta agendada</div>
-  } -->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -49,8 +49,8 @@
           <mat-label>Status</mat-label>
           <mat-select formControlName="status">
             <mat-option value="SCHEDULED">Agendada</mat-option>
-            <mat-option value="DONE">Concluída</mat-option>
-            <mat-option value="CANCELED">Cancelada</mat-option>
+            <mat-option value="DONE" disabled>Concluída</mat-option>
+            <mat-option value="CANCELED" disabled>Cancelada</mat-option>
           </mat-select>
           <mat-error>Você deve atribuir um status ao agendamento!</mat-error>
         </mat-form-field>
